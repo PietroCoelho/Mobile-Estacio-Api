@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        ports:
+            - '80:80'
+        volumes:
+            - ./public:/var/www/html
+            - ./:/var/www
+        environment:
+            APP_ENV: development
+        depends_on:
+            - pgsql
+        networks:
+            - laravel
+    pgsql:
+        image: postgres:13
+        container_name: pgsql.igreja
+        working_dir: /data/pgsql
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USERNAME: "postgres"
+            POSTGRES_PASSWORD: "postgres"
+        volumes:
+            - pgsql_data:/var/lib/postgresql/data
+        networks:
+            - laravel
+
+networks:
+    laravel:
+        driver: bridge
+
+volumes:
+    pgsql_data:
