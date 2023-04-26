@@ -32,9 +32,17 @@ class PersonsTableSeeder extends Seeder
 
         foreach ($this->data as $key => $person) {
             $key += 1;
+            
+            DB::table('type_persons')->insert([
+                'id' => 1,
+                'description' => 'cliente',
+                'created_at' => new DateTime('now'),
+                'updated_at' => new DateTime('now')
+            ]);
+
             DB::table('persons')->insert([
                 'id' => $key,
-                'type_person_id' => $person['type_person_id'],
+                'type_person_id' => $key,
                 'name' => $person['name'],
                 'surname' => $person['surname'],
                 'date_birth' => $person['date_birth'],
