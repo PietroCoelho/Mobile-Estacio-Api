@@ -19,7 +19,7 @@ services:
             - laravel
     pgsql:
         image: postgres:13
-        container_name: pgsql.igreja
+        container_name: pgsql.api
         working_dir: /data/pgsql
         ports:
             - "5432:5432"
