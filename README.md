@@ -18,4 +18,5 @@ Docker / Docker-compose
 * name: root, email: root@gmail.com, password: 123456
 
 # rotas Padrão da api
+* /api/login -> rota de autenticação
 * /api/persons -> essa rota comporta todas as requisições de um crud
