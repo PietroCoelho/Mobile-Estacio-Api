@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Hash;
 
-class PersonRepositoryEloquent implements Repository
+
+class UserRepositoryEloquent implements UserRepositoryInterface
 {
     protected Model $classModel;
 
@@ -25,19 +27,23 @@ class PersonRepositoryEloquent implements Repository
         return $this->classModel->getList($params);
     }
 
-    // public function findById($id)
-    // {
-    //     return $this->classModel->findList($id);
-    // }
+    public function findOne($id)
+    {
+        return $this->classModel->find($id);
+    }
 
     public function store(array $data)
     {
-        $rsPerson = $this->classModel->create($data);
-        return ['id' => $rsPerson->id];
+        $rsUser = $this->classModel->create(['name' => $data['name'], 'email' => $data['email'], 'password' => Hash::make($data['password'])]);
+
+        return ['id' => $rsUser->id];
     }
 
     public function update(array $data, $id)
     {
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
         $this->classModel->find($id)->update($data);
     }
 

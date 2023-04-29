@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Services;
 
+use App\Http\Repositories\PersonRepository\PersonRepositoryEloquent;
+use App\Http\Repositories\PersonRepository\PersonRepositoryInterface;
 use App\Http\Requests\PersonRequest;
-use App\Models\Person;
-use App\Http\Repositories\PersonRepositoryEloquent;
-use App\Http\Repositories\Repository;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -17,26 +16,31 @@ use Illuminate\Http\JsonResponse;
 class PersonsService extends Service
 {
 
+    protected array $params;
+    protected PersonRepositoryInterface $repository;
+    protected FormRequest $classRequest;
+
     public function __construct()
     {
-        $this->repo = new PersonRepositoryEloquent(new Person());
+        $this->repository = new PersonRepositoryEloquent();
         $this->classRequest = new PersonRequest();
-        parent::__construct();
     }
 
-    public function store(): JsonResponse
+    public function index(): JsonResponse
     {
         try {
-            if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
 
             if ($this->classRequest instanceof FormRequest) {
-                if (!method_exists($this->classRequest, 'rulesPost')) throw new HttpException(405, 'Operacao nao permitida');
-                $this->validate(new Request, $this->classRequest->rulesPost(), $this->classRequest->messages());
+                if (!method_exists($this->classRequest, 'rulesGet')) throw new HttpException(405, 'Operacao nao permitida');
+
+                $this->validate(new Request(), $this->classRequest->rulesGet(), $this->classRequest->messages());
             }
 
-            $rs = $this->repo->store($this->params);
+            if (!isset($this->params['per_page'])) $this->params['per_page'] = 15;
 
-            return response()->json(['data' => $rs, 'message' => 'Acao realizada com sucesso']);
+            $rsPersons = $this->repository->getList($this->params);
+
+            return response()->json($rsPersons, 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

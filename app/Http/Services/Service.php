@@ -14,7 +14,7 @@ use Illuminate\Http\JsonResponse;
 
 class Service
 {
-    protected Repository $repo;
+    protected $repo;
 
     protected FormRequest $classRequest;
 
