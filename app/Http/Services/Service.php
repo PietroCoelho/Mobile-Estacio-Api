@@ -60,7 +60,7 @@ class Service
     public function store(): JsonResponse
     {
         try {
-            if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
+            // if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
 
             if ($this->classRequest instanceof FormRequest) {
                 if (!method_exists($this->classRequest, 'rulesPost')) throw new HttpException(405, 'Operacao nao permitida');
@@ -79,7 +79,7 @@ class Service
     public function show($id)
     {
         try {
-            if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
+            // if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
             $result = $this->repo->findById($id);
             return response()->json(['data' => $result]);
         } catch (Exception $e) {
@@ -96,7 +96,7 @@ class Service
     public function update($id)
     {
         try {
-            if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
+            // if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
 
             if (!isset($id)) throw new Exception('Requisicao invalida!');
 
@@ -124,7 +124,7 @@ class Service
     public function destroy($id)
     {
         try {
-            if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
+            // if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
 
             if (!isset($id)) throw new Exception('Requisicao invalida!');
 

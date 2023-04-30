@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Services;
 
-use App\Http\Repositories\PersonRepository\PersonRepositoryEloquent;
-use App\Http\Repositories\PersonRepository\PersonRepositoryInterface;
+use App\Http\Repositories\EmployeeRepository\EmployeeRepositoryEloquent;
+use App\Http\Repositories\PersonRepository\{PersonRepositoryEloquent, PersonRepositoryInterface};
 use App\Http\Requests\PersonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
@@ -16,7 +16,6 @@ use Illuminate\Http\JsonResponse;
 class PersonsService extends Service
 {
 
-    protected array $params;
     protected PersonRepositoryInterface $repository;
     protected FormRequest $classRequest;
 
@@ -24,6 +23,7 @@ class PersonsService extends Service
     {
         $this->repository = new PersonRepositoryEloquent();
         $this->classRequest = new PersonRequest();
+        parent::__construct();
     }
 
     public function index(): JsonResponse
@@ -46,4 +46,36 @@ class PersonsService extends Service
         }
     }
 
+    /**
+     * Store a newly created resource in storage
+     * 
+     * @param $params
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(): JsonResponse
+    {
+        try {
+            if (!$this->repository instanceof PersonRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
+
+            if ($this->classRequest instanceof FormRequest) {
+                if (!method_exists($this->classRequest, 'rulesPost')) throw new HttpException(405, 'Operacao nao permitida');
+
+                $this->validate(new Request, $this->classRequest->rulesPost(), $this->classRequest->messages());
+            }
+
+            $rsPerson = $this->repository->store($this->params);
+            
+            if ($this->params['type_person_id']) {
+                $employeeModel = new EmployeeRepositoryEloquent();
+                $employeeData = [];
+                $employeeData['person_id'] = $rsPerson->id;
+                $employeeData['status'] = 1;
+                $employeeModel->save($employeeData);
+            }
+
+            return response()->json(['data' => $rsPerson, 'message' => 'Acao realizada com sucesso']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }
