@@ -35,7 +35,7 @@ class PersonsTableSeeder extends Seeder
             
             DB::table('type_persons')->insert([
                 'id' => 1,
-                'description' => 'cliente',
+                'description' => 'Cliente',
                 'created_at' => new DateTime('now'),
                 'updated_at' => new DateTime('now')
             ]);

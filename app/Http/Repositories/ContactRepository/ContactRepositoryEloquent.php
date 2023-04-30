@@ -8,7 +8,7 @@ use App\Models\Contact;
 
 class ContactRepositoryEloquent extends Contact implements ContactRepositoryInterface
 {
-    public function saveContactForPerson(int $personId, array $params): void
+    public function saveContactForPerson(array $params): void
     {
         
     }

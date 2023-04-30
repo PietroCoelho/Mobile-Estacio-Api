@@ -6,7 +6,7 @@ use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
 
-class TypePersonsTableSeeder extends Seeder
+class TypeContactTableSeeder extends Seeder
 {
     protected array $data = [];
 
@@ -18,8 +18,20 @@ class TypePersonsTableSeeder extends Seeder
     public function run()
     {
         array_push($this->data, [
+            'id' => 1,
+            'description' => 'Endereço',
+        ]);
+        array_push($this->data, [
             'id' => 2,
-            'description' => 'Funcionario',
+            'description' => 'Telefone',
+        ]);
+        array_push($this->data, [
+            'id' => 3,
+            'description' => 'Email',
+        ]);
+        array_push($this->data, [
+            'id' => 4,
+            'description' => 'Whatsapp',
         ]);
 
         foreach ($this->data as $typePerson) {
