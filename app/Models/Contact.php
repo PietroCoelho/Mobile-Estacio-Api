@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{Model, SoftDeletes};
 
-class Employee extends Model
+class Contact extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'employees';
+    protected $table = 'contacts';
     protected $primaryKey = 'id';
-    protected $fillable = ['person_id', 'status', 'user', 'password', 'registration_user_at', 'status_user', 'deleted_at'];
 }

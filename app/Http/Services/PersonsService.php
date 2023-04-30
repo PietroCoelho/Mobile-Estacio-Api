@@ -22,7 +22,6 @@ class PersonsService extends Service
     public function __construct()
     {
         $this->repository = new PersonRepositoryEloquent();
-        $this->classRequest = new PersonRequest();
         parent::__construct();
     }
 
@@ -59,18 +58,17 @@ class PersonsService extends Service
 
             if ($this->classRequest instanceof FormRequest) {
                 if (!method_exists($this->classRequest, 'rulesPost')) throw new HttpException(405, 'Operacao nao permitida');
-
                 $this->validate(new Request, $this->classRequest->rulesPost(), $this->classRequest->messages());
             }
 
             $rsPerson = $this->repository->store($this->params);
             
-            if ($this->params['type_person_id']) {
+            if ($rsPerson->type_person_id == 2) {
                 $employeeModel = new EmployeeRepositoryEloquent();
                 $employeeData = [];
                 $employeeData['person_id'] = $rsPerson->id;
                 $employeeData['status'] = 1;
-                $employeeModel->save($employeeData);
+                $employeeModel->store($employeeData);
             }
 
             return response()->json(['data' => $rsPerson, 'message' => 'Acao realizada com sucesso']);

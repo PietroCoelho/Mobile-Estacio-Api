@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('persons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('type_person_id');
+            $table->integer('type_person_id')->unsigned();
             $table->foreign('type_person_id')->references('id')->on('type_persons');
             $table->string('name', '150');
-            $table->string('surname', '200');
+            $table->string('surname', '200')->nullable();
             $table->date('date_birth');
             $table->string('gender', '1');
-            $table->string('cpf', '11');
-            $table->string('rg', '7');
+            $table->string('cpf', '11')->nullable();
+            $table->string('rg', '7')->nullable();
             $table->date('deleted_at')->nullable();
             $table->timestamps();
         });

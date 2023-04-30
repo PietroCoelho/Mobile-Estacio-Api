@@ -18,6 +18,6 @@ class PersonRepositoryEloquent extends Person implements PersonRepositoryInterfa
 
     public function store(array $params): stdClass
     {
-        return (object) $this->save($params);
+        return  (object) $this->create($params)->toArray();
     }
 }

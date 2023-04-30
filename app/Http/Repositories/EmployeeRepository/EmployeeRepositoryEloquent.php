@@ -17,6 +17,6 @@ class EmployeeRepositoryEloquent extends Employee implements EmployeeRepositoryI
 
     public function store(array $params): stdClass
     {
-        return (object) $this->save($params);
+        return (object) $this->create($params)->toArray();
     }
 }
