@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PersonsController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UtilitieController;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -12,7 +13,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 
     Route::resources([
-        'persons' => PersonsController::class,
+        'person' => PersonsController::class,
         'user' => UserController::class,
+        'utilitie' => UtilitieController::class,
     ]);
 });

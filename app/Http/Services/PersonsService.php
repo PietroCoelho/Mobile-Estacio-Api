@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Services;
 
 use App\Enums\TypePersonEnum;
-use App\Http\Repositories\EmployeeRepository\EmployeeRepositoryEloquent;
 use App\Http\Repositories\PersonRepository\{PersonRepositoryEloquent, PersonRepositoryInterface};
 use App\Http\Requests\PersonRequest;
 use Illuminate\Foundation\Http\FormRequest;
@@ -46,12 +45,6 @@ class PersonsService extends Service
         }
     }
 
-    /**
-     * Store a newly created resource in storage
-     * 
-     * @param $params
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function store(): JsonResponse
     {
         try {
@@ -76,7 +69,6 @@ class PersonsService extends Service
                 $contacService = new ContactService();
                 foreach ($this->params['contacts'] as $contac) {
                     $contac['person_id'] = $rsPerson->id;
-
                     $contacService->saveContactForPerson($contac);
                 }
             }

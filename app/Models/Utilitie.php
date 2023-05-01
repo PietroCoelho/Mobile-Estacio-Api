@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TypePersons extends Model
+class Utilitie extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'type_persons';
+    protected $table = 'utilities';
     protected $primaryKey = 'id';
+    protected $fillable = ['decription', 'amount', 'time_service', 'status', 'deleted_at'];
 }
