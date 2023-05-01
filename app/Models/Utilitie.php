@@ -11,5 +11,5 @@ class Utilitie extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'utilities';
     protected $primaryKey = 'id';
-    protected $fillable = ['decription', 'amount', 'time_service', 'status', 'deleted_at'];
+    protected $fillable = ['description', 'amount', 'time_service', 'status', 'deleted_at'];
 }
