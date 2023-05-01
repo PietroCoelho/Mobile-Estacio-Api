@@ -6,7 +6,6 @@ namespace App\Http\Services;
 
 use App\Http\Repositories\EmployeeRepository\EmployeeRepositoryEloquent;
 use App\Http\Repositories\PersonRepository\{PersonRepositoryEloquent, PersonRepositoryInterface};
-use App\Http\Requests\PersonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
