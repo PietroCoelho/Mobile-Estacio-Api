@@ -10,6 +10,6 @@ class ContactRepositoryEloquent extends Contact implements ContactRepositoryInte
 {
     public function saveContactForPerson(array $params): void
     {
-        
+        $this->create($params);
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Services;
 
+use App\Enums\TypePersonEnum;
 use App\Http\Repositories\EmployeeRepository\EmployeeRepositoryEloquent;
 use App\Http\Repositories\PersonRepository\{PersonRepositoryEloquent, PersonRepositoryInterface};
+use App\Http\Requests\PersonRequest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -16,11 +18,11 @@ class PersonsService extends Service
 {
 
     protected PersonRepositoryInterface $repository;
-    protected FormRequest $classRequest;
 
     public function __construct()
     {
         $this->repository = new PersonRepositoryEloquent();
+        $this->classRequest = new PersonRequest();
         parent::__construct();
     }
 
@@ -61,13 +63,22 @@ class PersonsService extends Service
             }
 
             $rsPerson = $this->repository->store($this->params);
-            
-            if ($rsPerson->type_person_id == 2) {
-                $employeeModel = new EmployeeRepositoryEloquent();
+
+            if ($rsPerson->type_person_id == TypePersonEnum::Employee) {
+                $employeeModel = new EmployeeService();
                 $employeeData = [];
                 $employeeData['person_id'] = $rsPerson->id;
                 $employeeData['status'] = 1;
-                $employeeModel->store($employeeData);
+                $employeeModel->saveEmployeeForPerson($employeeData);
+            }
+
+            if ($this->params['contacts']) {
+                $contacService = new ContactService();
+                foreach ($this->params['contacts'] as $contac) {
+                    $contac['person_id'] = $rsPerson->id;
+
+                    $contacService->saveContactForPerson($contac);
+                }
             }
 
             return response()->json(['data' => $rsPerson, 'message' => 'Acao realizada com sucesso']);

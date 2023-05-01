@@ -10,4 +10,5 @@ class Contact extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'contacts';
     protected $primaryKey = 'id';
+    protected $fillable = ['type_contact_id', 'description', 'person_id','deleted_at'];
 }

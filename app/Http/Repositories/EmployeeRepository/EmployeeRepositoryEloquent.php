@@ -19,4 +19,9 @@ class EmployeeRepositoryEloquent extends Employee implements EmployeeRepositoryI
     {
         return (object) $this->create($params)->toArray();
     }
+
+    public function saveEmployeeForPerson(array $employee): void
+    {
+        $this->create($employee);
+    }
 }

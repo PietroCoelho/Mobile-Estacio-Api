@@ -34,11 +34,11 @@ class TypeContactTableSeeder extends Seeder
             'description' => 'Whatsapp',
         ]);
 
-        foreach ($this->data as $typePerson) {
+        foreach ($this->data as $typeContact) {
 
-            DB::table('type_persons')->insert([
-                'id' => $typePerson['id'],
-                'description' => $typePerson['description'],
+            DB::table('type_contacts')->insert([
+                'id' => $typeContact['id'],
+                'description' => $typeContact['description'],
                 'created_at' => new DateTime('now'),
                 'updated_at' => new DateTime('now')
             ]);

@@ -12,7 +12,6 @@ class ContactService extends Service
 {
 
     protected ContactRepositoryInterface $repository;
-    protected FormRequest $classRequest;
 
     public function __construct()
     {
@@ -22,9 +21,8 @@ class ContactService extends Service
 
     public function saveContactForPerson(array $contacts): void
     {
-
         if (!$this->repository instanceof ContactRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
 
-        $this->repository->saveContactForPerson($this->params);
+        $this->repository->saveContactForPerson($contacts);
     }
 }
