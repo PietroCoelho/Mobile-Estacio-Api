@@ -19,6 +19,7 @@ return new class extends Migration
             $table->float('amount');
             $table->time('time_service');
             $table->string('status','1');
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
         });
     }

@@ -9,7 +9,7 @@ use App\Http\Requests\UtilitieRequest;
 use Exception;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request ;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UtilitieService extends Service
@@ -61,5 +61,39 @@ class UtilitieService extends Service
             return response()->json(['message' => $e->getMessage()], 400);
         }
     }
-    
+
+    public function update($id)
+    {
+        try {
+            if (!isset($id)) throw new Exception('Requisicao invalida!');
+
+            if ($this->classRequest instanceof FormRequest) {
+                if (!method_exists($this->classRequest, 'rulesPut')) throw new HttpException(405, 'Operacao nao permitida');
+
+                $this->validate(new Request, $this->classRequest->rulesPut(), $this->classRequest->messages());
+            }
+
+            $this->repository->edit($this->params, $id);
+
+            return response()->json(['message' => 'Acao realizada com sucesso']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+
+            if (!isset($id)) throw new Exception('Requisicao invalida!');
+
+            $rs = $this->repository->exclude($id);
+
+            if ($rs != 1) throw new Exception("Nenhum registro deletado!");
+
+            return response()->json(['data' => $id, 'message' => 'Acao efetuada com sucesso!']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }

@@ -9,8 +9,8 @@ use stdClass;
 interface UtilitieRepositoryInterface
 {
     public function getList(array $params);
-    // public function findOne($id);
+    public function findOne($id);
     public function store(array $data): stdClass;
-    // public function update(array $data, $id);
-    // public function destroy($id);
+    public function edit(array $data, $id): stdClass;
+    public function exclude($id);
 }

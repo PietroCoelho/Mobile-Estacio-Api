@@ -95,7 +95,6 @@ class Service
     public function update($id)
     {
         try {
-            // if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
 
             if (!isset($id)) throw new Exception('Requisicao invalida!');
 
@@ -123,7 +122,6 @@ class Service
     public function destroy($id)
     {
         try {
-            // if (!$this->repo instanceof Repository) throw new HttpException(405, 'Operacao nao permitida');
 
             if (!isset($id)) throw new Exception('Requisicao invalida!');
 
