@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('utilities', function (Blueprint $table) {
             $table->id();
-            $table->string('decription');
+            $table->string('description');
             $table->float('amount');
             $table->time('time_service');
             $table->string('status','1');
