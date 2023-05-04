@@ -75,7 +75,7 @@ class UtilitieService extends Service
 
             $this->repository->edit($this->params, $id);
 
-            return response()->json(['message' => 'Acao realizada com sucesso']);
+            return response()->json(['data' => $this->params, 'message' => 'Acao realizada com sucesso']);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

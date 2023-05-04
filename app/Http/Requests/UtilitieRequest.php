@@ -20,7 +20,12 @@ class UtilitieRequest extends FormRequest
 
     public function rulesPost()
     {
-        return [];
+        return [
+            'description' => 'required',
+            'amount' => 'required|float',
+            'time_service' => 'required|time',
+            'status' => 'required|int',
+        ];
     }
 
     public function rulesPut()
@@ -30,6 +35,12 @@ class UtilitieRequest extends FormRequest
 
     public function messages()
     {
-        return [];
+        return [
+            'description.required' => __('É necessário informar a descrição do serviço - param[description]'),
+            'amount.required' => __('É necessário informar o valor do serviço - param[amount]'),
+            'time_service.required' => __('É necessário informar o tempo que levará o serviço - param[time_service]'),
+            'status.required' => __('É necessário informar o status do serviço - param[status]'),
+            'status.int' => __('O tipo de informação do status deve ser um inteiro - param[status]')
+        ];
     }
 }
