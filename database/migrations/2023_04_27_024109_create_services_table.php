@@ -27,6 +27,7 @@ return new class extends Migration
             $table->float('amount');
             $table->float('amount_paid');
             $table->string('status','1');
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
         });
     }

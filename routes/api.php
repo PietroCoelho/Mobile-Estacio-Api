@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PersonsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UtilitieController;
+use App\Http\Services\ServicesService;
 
 Route::controller(AuthController::class)->group(function () {
     Route::post('login', 'login');
@@ -16,5 +17,6 @@ Route::controller(AuthController::class)->group(function () {
         'person' => PersonsController::class,
         'user' => UserController::class,
         'utilitie' => UtilitieController::class,
+        'service' => ServicesService::class,
     ]);
 });
