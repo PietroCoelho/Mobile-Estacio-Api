@@ -62,6 +62,17 @@ class UtilitieService extends Service
         }
     }
 
+    public function show($id)
+    {
+        try {
+            if (!$this->repository instanceof UtilitieRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
+            $result = $this->repository->findById($id);
+            return response()->json(['data' => $result]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
     public function update($id)
     {
         try {

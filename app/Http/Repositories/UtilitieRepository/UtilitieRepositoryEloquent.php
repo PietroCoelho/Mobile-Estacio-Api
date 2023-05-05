@@ -15,7 +15,7 @@ class UtilitieRepositoryEloquent extends Utilitie implements UtilitieRepositoryI
         return $this->paginate($params['per_page'])->toArray();
     }
 
-    public function findOne($id)
+    public function findById($id)
     {
         return $this->find($id);
     }
