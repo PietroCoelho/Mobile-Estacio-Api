@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('type_contact_id');
             $table->foreign('type_contact_id')->references('id')->on('type_contacts');
             $table->string('description');
+            $table->date('deleted_at')->nullable();
             $table->timestamps();
         });
     }

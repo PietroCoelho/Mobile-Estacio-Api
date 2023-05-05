@@ -24,4 +24,11 @@ class ContactService extends Service
 
         $this->repository->saveContactForPerson($contacts);
     }
+
+    public function updateContactForPerson(array $data): void
+    {
+        if (!$this->repository instanceof ContactRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
+
+        $this->repository->updateContactForPerson($data);
+    }
 }

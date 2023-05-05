@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Services;
 
-use App\Enums\TypePersonEnum;
 use App\Http\Repositories\PersonRepository\{PersonRepositoryEloquent, PersonRepositoryInterface};
 use App\Http\Requests\PersonRequest;
 use Illuminate\Foundation\Http\FormRequest;
@@ -56,8 +55,9 @@ class PersonsService extends Service
             }
 
             $rsPerson = $this->repository->store($this->params);
+            $this->params['id'] = $rsPerson->id;
 
-            if ($rsPerson->type_person_id == TypePersonEnum::Employee) {
+            if ($rsPerson->type_person_id == 2) {
                 $employeeModel = new EmployeeService();
                 $employeeData = [];
                 $employeeData['person_id'] = $rsPerson->id;
@@ -73,7 +73,59 @@ class PersonsService extends Service
                 }
             }
 
-            return response()->json(['data' => $rsPerson, 'message' => 'Acao realizada com sucesso']);
+            return response()->json(['data' => $this->params, 'message' => 'Acao realizada com sucesso']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function show($id)
+    {
+        try {
+            if (!$this->repository instanceof PersonRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
+            $result = $this->repository->findById($id);
+            return response()->json(['data' => $result]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function update($id)
+    {
+        try {
+            if (!$this->repository instanceof PersonRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
+
+            if ($this->classRequest instanceof FormRequest) {
+                if (!method_exists($this->classRequest, 'rulesPut')) throw new HttpException(405, 'Operacao nao permitida');
+                $this->validate(new Request, $this->classRequest->rulesPut(), $this->classRequest->messages());
+            }
+
+            $rsPerson = $this->repository->edit($this->params, $id);
+
+            if ($this->params['contacts']) {
+                $contacService = new ContactService();
+                foreach ($this->params['contacts'] as $contac) {
+                    $contacService->updateContactForPerson($contac);
+                }
+            }
+
+            return response()->json(['data' => $this->params, 'message' => 'Acao realizada com sucesso']);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+
+            if (!isset($id)) throw new Exception('Requisicao invalida!');
+
+            $rs = $this->repository->exclude($id);
+
+            if ($rs != 1) throw new Exception("Nenhum registro deletado!");
+
+            return response()->json(['data' => $id, 'message' => 'Acao efetuada com sucesso!']);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

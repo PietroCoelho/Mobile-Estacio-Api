@@ -7,4 +7,5 @@ namespace App\Http\Repositories\ContactRepository;
 interface ContactRepositoryInterface
 {
     public function saveContactForPerson(array $params): void;
+    public function updateContactForPerson(array $data): void;
 }

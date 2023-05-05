@@ -12,4 +12,9 @@ class ContactRepositoryEloquent extends Contact implements ContactRepositoryInte
     {
         $this->create($params);
     }
+
+    public function updateContactForPerson(array $data): void
+    {
+        $this->find($data['id'])->update($data);
+    }
 }
