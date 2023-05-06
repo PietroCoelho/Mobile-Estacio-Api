@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('observation')->nullable();
             $table->float('amount');
             $table->float('amount_paid');
-            $table->string('status','1');
+            $table->string('status', '1')->default(1);
             $table->date('deleted_at')->nullable();
             $table->timestamps();
         });

@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Repositories\UtilitieRepository;
 
 use App\Models\Utilitie;
+use Illuminate\Pagination\LengthAwarePaginator;
 use stdClass;
 
 class UtilitieRepositoryEloquent extends Utilitie implements UtilitieRepositoryInterface
 {
 
-    public function getList(array $params): array
+    public function getList(array $params): LengthAwarePaginator
     {
-        return $this->paginate($params['per_page'])->toArray();
+        return $this->paginate($params['per_page']);
     }
 
     public function findById($id)
@@ -20,14 +21,14 @@ class UtilitieRepositoryEloquent extends Utilitie implements UtilitieRepositoryI
         return $this->find($id);
     }
 
-    public function store(array $data): stdClass
+    public function store(array $data)
     {
-        return (object) $this->create($data)->toArray();
+        return $this->create($data);
     }
 
-    public function edit(array $data, $id): stdClass
+    public function edit(array $data, $id)
     {
-        return (object) $this->find($id)->update($data);
+        return $this->find($id)->update($data);
     }
 
     public function exclude($id)
