@@ -55,25 +55,8 @@ class PersonsService extends Service
             }
 
             $rsPerson = $this->repository->store($this->params);
-            $this->params['id'] = $rsPerson->id;
 
-            if ($rsPerson->type_person_id == 2) {
-                $employeeModel = new EmployeeService();
-                $employeeData = [];
-                $employeeData['person_id'] = $rsPerson->id;
-                $employeeData['status'] = 1;
-                $employeeModel->saveEmployeeForPerson($employeeData);
-            }
-
-            if ($this->params['contacts']) {
-                $contacService = new ContactService();
-                foreach ($this->params['contacts'] as $contac) {
-                    $contac['person_id'] = $rsPerson->id;
-                    $contacService->saveContactForPerson($contac);
-                }
-            }
-
-            return response()->json(['data' => $this->params, 'message' => 'Acao realizada com sucesso']);
+            return response()->json(['data' => $rsPerson->findById($rsPerson->id), 'message' => 'Acao realizada com sucesso']);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
@@ -84,7 +67,7 @@ class PersonsService extends Service
         try {
             if (!$this->repository instanceof PersonRepositoryInterface) throw new HttpException(405, 'Operacao nao permitida');
             $result = $this->repository->findById($id);
-            return response()->json(['data' => $result]);
+            return response()->json(['data' => $result], 200);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
@@ -102,14 +85,7 @@ class PersonsService extends Service
 
             $rsPerson = $this->repository->edit($this->params, $id);
 
-            if ($this->params['contacts']) {
-                $contacService = new ContactService();
-                foreach ($this->params['contacts'] as $contac) {
-                    $contacService->updateContactForPerson($contac);
-                }
-            }
-
-            return response()->json(['data' => $this->params, 'message' => 'Acao realizada com sucesso']);
+            return response()->json(['data' => $rsPerson, 'message' => 'Acao realizada com sucesso']);
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }

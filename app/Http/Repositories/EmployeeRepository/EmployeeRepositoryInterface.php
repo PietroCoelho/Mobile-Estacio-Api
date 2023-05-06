@@ -9,6 +9,4 @@ use stdClass;
 interface EmployeeRepositoryInterface
 {
     public function getList(array $params): array;
-    public function store(array $params): stdClass;
-    public function saveEmployeeForPerson(array $employee): void;
 }

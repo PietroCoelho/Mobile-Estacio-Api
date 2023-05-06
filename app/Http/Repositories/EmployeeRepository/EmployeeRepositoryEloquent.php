@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Repositories\EmployeeRepository;
 
 use App\Models\Employee;
-use stdClass;
+use App\Models\Person;
 
 class EmployeeRepositoryEloquent extends Employee implements EmployeeRepositoryInterface
 {
@@ -15,13 +15,8 @@ class EmployeeRepositoryEloquent extends Employee implements EmployeeRepositoryI
         return $this->paginate($params['per_page'])->toArray();
     }
 
-    public function store(array $params): stdClass
+    public function person()
     {
-        return (object) $this->create($params)->toArray();
-    }
-
-    public function saveEmployeeForPerson(array $employee): void
-    {
-        $this->create($employee);
+        return $this->belongsTo(Person::class, 'person_id');
     }
 }

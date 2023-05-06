@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('person_id')->unsigned();
             $table->foreign('person_id')->references('id')->on('persons');
-            $table->string('status', '1');
+            $table->string('status', '1')->default(1);
             $table->string('user', '150')->nullable();
             $table->string('password')->nullable();
             $table->date('registration_user_at')->nullable();
