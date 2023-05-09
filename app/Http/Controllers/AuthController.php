@@ -6,10 +6,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthRequest;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use DateTime;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
@@ -70,6 +72,12 @@ class AuthController extends Controller
                 'email' => $this->params['email'],
                 'password' => Hash::make($this->params['password']),
             ]);
+
+            if (isset($this->params['employee_id']) && !empty($this->params['employee_id'])) {
+                (int)$id = $this->params['employee_id'];
+                $employee = Employee::find($id);
+                $employee->update(['user' => $user->id, 'registration_at' => DateTime::ATOM, 'status_user' => 1]);
+            }
 
             $token = Auth::login($user);
             return response()->json(['status' => 'success', 'message' => 'User created successfully', 'user' => $user, 'authorisation' => ['token' => $token, 'type' => 'bearer',]]);

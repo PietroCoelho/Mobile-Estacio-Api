@@ -7,7 +7,6 @@ namespace App\Http\Repositories\PersonRepository;
 use App\Models\{Contact, Employee, Person};
 use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Facades\DB;
 
 class PersonRepositoryEloquent extends Person implements PersonRepositoryInterface
 {
@@ -24,33 +23,29 @@ class PersonRepositoryEloquent extends Person implements PersonRepositoryInterfa
 
     public function store(array $params)
     {
-        DB::beginTransaction();
         try {
-
             $rsPerson = $this->create($params);
             if ($rsPerson->type_person_id == 2) {
                 $rsPerson->employee()->create(['person_id' => $rsPerson->id]);
             }
 
-            if ($this->params['contacts']) {
-                foreach ($this->params['contacts'] as $contac) {
+            if ($params['contacts']) {
+                foreach ($params['contacts'] as $contac) {
                     $contac['person_id'] = $rsPerson->id;
                     $rsPerson->contacts()->create($contac);
                 }
             }
 
             return $rsPerson;
-            DB::commit();
         } catch (Exception $e) {
-            DB::rollback();
-            throw $e;
+            throw $e->getMessage();
         }
     }
 
     public function edit(array $data, $id)
     {
         try {
-            DB::beginTransaction();
+
             $rsPerson = $this->find($id);
             $rsPerson->update($data);
             if ($data['contacts']) {
@@ -59,10 +54,8 @@ class PersonRepositoryEloquent extends Person implements PersonRepositoryInterfa
                 }
             }
             return $rsPerson;
-            DB::commit();
         } catch (Exception $e) {
-            DB::rollback();
-            throw $e;
+            throw $e->getMessage();
         }
     }
 
